@@ -32,7 +32,7 @@ from typing import Optional, List
 # ──────────────────────────────────────────────
 # Configuración
 # ──────────────────────────────────────────────
-MODEL_PATH = os.path.join("models", "house_rent_model.pkl")
+MODEL_PATH = os.path.join("..s","models", "house_rent_model.pkl")
 
 app = FastAPI(
     title="House Rent Prediction API",
