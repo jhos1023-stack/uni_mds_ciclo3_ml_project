@@ -1,15 +1,16 @@
  
+
 import os
 import joblib
 import numpy as np
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
-from typing import Optional, List
+from typing import List
 
 # ──────────────────────────────────────────────
 # Configuración
 # ──────────────────────────────────────────────
-MODEL_PATH = os.path.join("..","models", "house_rent_model.pkl")
+MODEL_PATH = os.path.join("models", "house_rent_model.pkl")
 
 app = FastAPI(
     title="House Rent Prediction API",
@@ -44,7 +45,7 @@ class HouseFeatures(BaseModel):
     total_floors: int = Field(1, ge=1, description="Total de pisos del edificio")
 
     class Config:
-        json_schema_extra = {
+        schema_extra = {
             "example": {
                 "BHK": 2,
                 "Size": 1100,
@@ -62,7 +63,7 @@ class HouseFeatures(BaseModel):
 class PredictionResponse(BaseModel):
     predicted_rent_inr: float
     predicted_rent_formatted: str
-    model_version: str = "1.0.0"
+    version: str = "1.0.0"
     inputs: dict
 
 
@@ -92,13 +93,6 @@ def predict(features: HouseFeatures):
             detail="Modelo no disponible. Ejecuta src/train.py para entrenar el modelo."
         )
 
-    feature_names = [
-        "BHK", "Size", "Area Type", "City",
-        "Furnishing Status", "Tenant Preferred",
-        "Bathroom", "floor_number", "total_floors"
-    ]
-
-    # Mapear nombres con espacios al orden esperado por el modelo
     X = np.array([[
         features.BHK,
         features.Size,
@@ -112,11 +106,11 @@ def predict(features: HouseFeatures):
     ]])
 
     prediction = float(model.predict(X)[0])
-    prediction = max(0, prediction)  # No permitir valores negativos
+    prediction = max(0, prediction)
 
     return PredictionResponse(
         predicted_rent_inr=round(prediction, 2),
-        predicted_rent_formatted=f"₹ {prediction:,.0f} / mes",
+        predicted_rent_formatted=f"Rs. {prediction:,.0f} / mes",
         inputs=features.dict()
     )
 
@@ -138,6 +132,6 @@ def predict_batch(features_list: List[HouseFeatures]):
         pred = float(model.predict(X)[0])
         results.append({
             "predicted_rent_inr": round(max(0, pred), 2),
-            "predicted_rent_formatted": f"₹ {max(0, pred):,.0f} / mes"
+            "predicted_rent_formatted": f"Rs. {max(0, pred):,.0f} / mes"
         })
     return {"predictions": results, "count": len(results)}
