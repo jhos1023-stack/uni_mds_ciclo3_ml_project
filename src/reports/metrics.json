@@ -1,0 +1,33 @@
+{
+  "model": "Random Forest",
+  "test_r2": 0.7601,
+  "test_mae": 6102.6,
+  "test_rmse": 9627.48,
+  "test_mape_pct": 34.33,
+  "cv_results": {
+    "Ridge Regression": {
+      "r2_mean": 0.5556,
+      "r2_std": 0.029
+    },
+    "Random Forest": {
+      "r2_mean": 0.7247,
+      "r2_std": 0.0146
+    },
+    "Gradient Boosting": {
+      "r2_mean": 0.7236,
+      "r2_std": 0.0217
+    }
+  },
+  "features": [
+    "BHK",
+    "Size",
+    "Area Type",
+    "City",
+    "Furnishing Status",
+    "Tenant Preferred",
+    "Bathroom",
+    "floor_number",
+    "total_floors"
+  ],
+  "target": "Rent"
+}
