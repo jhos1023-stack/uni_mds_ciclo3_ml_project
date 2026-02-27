@@ -1,27 +1,4 @@
-"""
-serving.py
-----------
-API REST con FastAPI para servir predicciones del modelo de alquiler.
-
-Ejecución:
-    uvicorn src.serving:app --host 0.0.0.0 --port 8000 --reload
-
-Ejemplo de petición (curl):
-    curl -X POST "http://localhost:8000/predict" \
-         -H "Content-Type: application/json" \
-         -d '{
-               "BHK": 2,
-               "Size": 1100,
-               "Area_Type": 1,
-               "City": 2,
-               "Furnishing_Status": 1,
-               "Tenant_Preferred": 0,
-               "Bathroom": 2,
-               "floor_number": 3,
-               "total_floors": 10
-             }'
-"""
-
+ 
 import os
 import joblib
 import numpy as np
@@ -32,7 +9,7 @@ from typing import Optional, List
 # ──────────────────────────────────────────────
 # Configuración
 # ──────────────────────────────────────────────
-MODEL_PATH = os.path.join("..s","models", "house_rent_model.pkl")
+MODEL_PATH = os.path.join("..","models", "house_rent_model.pkl")
 
 app = FastAPI(
     title="House Rent Prediction API",
